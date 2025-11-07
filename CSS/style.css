@@ -51,43 +51,104 @@ textarea:focus {
   border: 1.5px solid #6d79cd;
 }
 
-.btn.new {
-  background-color: #dd567e;
-  border: 2px solid #c93964;
-  margin-bottom: 10px;
+/*.btn.new {*/
+/*  background-color: #dd567e;*/
+/*  border: 2px solid #c93964;*/
+/*  margin-bottom: 10px;*/
+/*}*/
+
+/*.btn.new:hover {*/
+/*  background-color: #c93964;*/
+/*  border: 2px solid #ac254d;*/
+/*}*/
+
+/*.btn.success {*/
+/*  background-color: #4fc966;*/
+/*  border: 2px solid #2aa24f;*/
+/*}*/
+
+/*.btn.success:hover {*/
+/*  background-color: #2aa24f;*/
+/*  border: 2px solid #1e853e;*/
+/*}*/
+
+/*.btn.light {*/
+/*  background-color: #4eafc9;*/
+/*  border: 2px solid #2a89a2;*/
+/*}*/
+
+/*.btn.red {*/
+/*  background-color: #dda66d;*/
+/*  border: 2px solid #b6821a;*/
+/*}*/
+
+/*.btn.light:hover {*/
+/*  background-color: #2a89a2;*/
+/*  border-color: #1d6f85;*/
+/*}*/
+
+/*.btn.red:hover {*/
+/*  background-color: #b6821a;*/
+/*  border-color: #946912;*/
+/*}*/
+
+/* Активные задачи */
+.box.active {
+  background: #f0fff4;
+  border-left: 4px solid #4caf50;
 }
 
-.btn.new:hover {
-  background-color: #c93964;
-  border: 2px solid #ac254d;
+/* Выполненные задачи */
+.box.done {
+  background: #f7f7f7;
+  border-left: 4px solid #5d5e77;
+  opacity: 0.7;
+  text-decoration: line-through;
 }
 
-.btn.success {
-  background-color: #4fc966;
-  border: 2px solid #2aa24f;
+/* Текст состояния */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  margin-bottom: 4px;
 }
 
-.btn.success:hover {
-  background-color: #2aa24f;
-  border: 2px solid #1e853e;
+.checkbox-label span {
+  font-size: 0.9em;
+  color: #333;
 }
 
-.btn.light {
-  background-color: #4eafc9;
-  border: 2px solid #2a89a2;
+
+.btn {
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  margin: 4px;
+  cursor: pointer;
+  color: rgb(117, 138, 241);
+  font-weight: 500;
+  transition: background 0.2s ease;
 }
 
-.btn.red {
-  background-color: #dda66d;
-  border: 2px solid #b6821a;
+/* 🟩 Зелёные — добавление, редактирование, сохранение */
+.btn.green-light { background-color: #93a0e0; color: #fff; }
+.btn.green-mid   { background-color: #091c7e; color: #fff; }
+.btn.green-dark  { background-color: #2e7d32; color: #fff; }
+
+/* 🟥 Красные — удаление, очистка */
+.btn.red-light   { background-color: #ef9a9a; color: #fff; }
+.btn.red-mid     { background-color: #ec0a0a; color: #fff; }
+.btn.red-dark    { background-color: #ee0f0f; color: #fff; }
+
+/* Наведение — чуть темнее */
+.btn:hover {
+  filter: brightness(0.9);
 }
 
-.btn.light:hover {
-  background-color: #2a89a2;
-  border-color: #1d6f85;
-}
-
-.btn.red:hover {
-  background-color: #b6821a;
-  border-color: #946912;
+.timestamp {
+  color: rgb(12, 78, 129);
+  font-size: 0.8em;
+  margin-top: 3px;
 }
