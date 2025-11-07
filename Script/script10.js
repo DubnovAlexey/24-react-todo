@@ -4,7 +4,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 /* ---------------------------------------------------
    Компонент Task — отображает одну задачу (один элемент списка)
    --------------------------------------------------- */
-const Task = ({ children, index, remove, edit }) => {
+const Task = ({children, index, remove, edit}) => {
   // Локальное состояние, отвечает за то, редактируем ли мы сейчас задачу
   const [isEditing, setIsEditing] = React.useState(false);
 
@@ -50,7 +50,8 @@ const Task = ({ children, index, remove, edit }) => {
   } else {
     return (
       <div className="box">
-        <div>{children}</div> {/* отображаем текст задачи */}
+        <div>{children}</div>
+        {/* отображаем текст задачи */}
         <button
           onClick={handleClickEdit} // включаем режим редактирования
           className="btn light"
@@ -98,7 +99,11 @@ const TaskList = () => {
   return (
     <div className="field">
       {/* Кнопка добавления новой задачи */}
-      <button onClick={addTask} className="btn new">Add task</button>
+      <button
+        onClick={addTask}
+        className="btn new"
+      >Add task
+      </button>
 
       {/* 
         Проходимся по массиву задач и для каждой создаём компонент Task.
@@ -111,8 +116,10 @@ const TaskList = () => {
           remove={deleteTask} // ссылка на функцию удаления
           edit={editTask}     // ссылка на функцию редактирования
         >
-          {t}                // передаём текст задачи как children
-        </Task>
+
+          {t}
+        </Task>   /*  передаём текст задачи как children
+        */
       ))}
     </div>
   );
