@@ -1,7 +1,6 @@
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 /* ---------------------------------------------------
-   Компонент Task — активная или выполненная задача
    --------------------------------------------------- */
 const Task = ({ task, index, toggleDone, remove, edit }) => {
   const [isEditing, setIsEditing] = React.useState(false);
@@ -9,42 +8,26 @@ const Task = ({ task, index, toggleDone, remove, edit }) => {
 
   const handleSave = () => {
     const newText = textRef.current.value.trim();
-    if (newText) edit(index, newText);
     setIsEditing(false);
   };
 
   return (
-    <div className={`box ${task.done ? 'done' : 'active'}`}>
       {isEditing ? (
         <>
           <textarea ref={textRef} defaultValue={task.text}></textarea>
-          <button onClick={handleSave} className="btn green-light">Сохранить</button>
         </>
       ) : (
         <>
           <div className="task-row">
-            <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={task.done}
                 onChange={() => toggleDone(index)}
               />
-              <span>{task.done ? '✅ Выполнено' : '🔲 Активно'}</span>
-            </label>
-            <div className="task-text">{task.text}</div>
-          </div>
           <div className="timestamp">
             <small>Создано: {task.created}</small>
           </div>
           <div className="buttons">
-            {!task.done && (
-              <button onClick={() => setIsEditing(true)} className="btn green-mid">
-                Редактировать
-              </button>
-            )}
-            <button onClick={() => remove(index)} className="btn red-mid">
-              Удалить
-            </button>
           </div>
         </>
       )}
@@ -67,8 +50,6 @@ const TrashTask = ({ task, index, restore, removeForever }) => {
         </div>
       </div>
       <div className="buttons">
-        <button onClick={() => restore(index)} className="btn green-mid">Восстановить</button>
-        <button onClick={() => removeForever(index)} className="btn red-dark">Удалить навсегда</button>
       </div>
     </div>
   );
@@ -84,7 +65,6 @@ const TaskList = () => {
   const [filter, setFilter] = React.useState('all'); // all | active | done
   const [showTrash, setShowTrash] = React.useState(false);
 
-  // 🔄 Загрузка сохранённых данных
   React.useEffect(() => {
     const savedTasks = JSON.parse(localStorage.getItem('tasks'));
     const savedDeleted = JSON.parse(localStorage.getItem('deletedTasks'));
@@ -92,7 +72,6 @@ const TaskList = () => {
     if (savedDeleted) setDeletedTasks(savedDeleted);
   }, []);
 
-  // 💾 Сохранение изменений
   React.useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
     localStorage.setItem('deletedTasks', JSON.stringify(deletedTasks));
@@ -115,7 +94,6 @@ const TaskList = () => {
     setTasks(tasks.filter((_, i) => i !== index));
   };
 
-  // 🔁 Восстановить задачу из корзины
   const restoreTask = (index) => {
     const task = deletedTasks[index];
     setTasks([...tasks, { ...task, deleted: undefined }]);
@@ -127,21 +105,12 @@ const TaskList = () => {
     setDeletedTasks(deletedTasks.filter((_, i) => i !== index));
   };
 
-  // 🧹 Очистить корзину полностью
-  const clearTrash = () => {
-    if (window.confirm('Очистить всю корзину без возможности восстановления?')) {
-      setDeletedTasks([]);
-    }
-  };
-
-  // ✏️ Изменить текст задачи
   const editTask = (index, text) => {
     const newTasks = [...tasks];
     newTasks[index].text = text;
     setTasks(newTasks);
   };
 
-  // ✅ Переключить статус задачи
   const toggleDone = (index) => {
     const newTasks = [...tasks];
     newTasks[index].done = !newTasks[index].done;
@@ -154,7 +123,6 @@ const TaskList = () => {
   const remaining = total - completed;
   const deletedCount = deletedTasks.length;
 
-  // 🔍 Фильтрация списка
   const filteredTasks = tasks.filter(t =>
     filter === 'all' ? true :
       filter === 'active' ? !t.done :
@@ -165,16 +133,13 @@ const TaskList = () => {
     <div className="field">
       <h2>Мой список задач</h2>
 
-      {/* Переключение между списком и корзиной */}
       <div className="toggle-view">
         <button
-          className={`btn ${!showTrash ? 'green-light' : ''}`}
           onClick={() => setShowTrash(false)}
         >
           Задачи
         </button>
         <button
-          className={`btn ${showTrash ? 'red-light' : ''}`}
           onClick={() => setShowTrash(true)}
         >
           Корзина ({deletedCount})
@@ -192,29 +157,15 @@ const TaskList = () => {
               placeholder="Введите новую задачу..."
               className="input"
             />
-            <button onClick={addTask} className="btn green-dark">Добавить</button>
           </div>
 
-          {/* Фильтры */}
           <div className="filter">
             <button
-              className={`btn ${filter === 'all' ? 'green-light' : ''}`}
               onClick={() => setFilter('all')}
-            >
-              Все
-            </button>
             <button
-              className={`btn ${filter === 'active' ? 'green-mid' : ''}`}
               onClick={() => setFilter('active')}
-            >
-              Активные
-            </button>
             <button
-              className={`btn ${filter === 'done' ? 'green-dark' : ''}`}
               onClick={() => setFilter('done')}
-            >
-              Выполненные
-            </button>
           </div>
 
           {/* Статистика */}
@@ -227,13 +178,7 @@ const TaskList = () => {
 
           {/* Список задач */}
           {filteredTasks.length === 0 ? (
-            filter === 'done' ? (
-              <p>Нет выполненных задач ✅</p>
-            ) : filter === 'active' ? (
-              <p>Нет активных задач 🚀</p>
-            ) : (
               <p>Нет задач 🤔</p>
-            )
           ) : (
             filteredTasks.map((task, i) => (
               <Task
@@ -253,9 +198,6 @@ const TaskList = () => {
           {deletedTasks.length === 0 ? (
             <p>Корзина пуста 🧹</p>
           ) : (
-            <>
-              <button onClick={clearTrash} className="btn red-dark">Очистить корзину</button>
-              {deletedTasks.map((task, i) => (
                 <TrashTask
                   key={i}
                   index={i}
@@ -263,8 +205,6 @@ const TaskList = () => {
                   restore={restoreTask}
                   removeForever={removeForever}
                 />
-              ))}
-            </>
           )}
         </>
       )}
@@ -276,4 +216,3 @@ const TaskList = () => {
    Отрисовка приложения
    --------------------------------------------------- */
 root.render(<TaskList />);
-
