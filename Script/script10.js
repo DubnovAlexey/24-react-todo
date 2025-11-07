@@ -1,6 +1,6 @@
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const Task = ({children}) => {
+const Task = ({children, index, remove, edit}) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const textId = React.useRef();
 
@@ -9,11 +9,11 @@ const Task = ({children}) => {
   }
 
   const handleClickRemove = () => {
-    alert(`Pressed remove button for task ${children}`);
+    remove(index);
   }
 
   const handleClickSave = () => {
-    alert(textId.current.value);
+   edit(index, textId.current.value);
     setIsEditing(false);
   }
 
@@ -51,7 +51,7 @@ const Task = ({children}) => {
 }
 
 const TaskList = () => {
-  const [tasks, setTasks] = React.useState(['My task 1', 'My task 2', 'My task 3', ]);
+  const [tasks, setTasks] = React.useState([]);
 
   const deleteTask = (index) => {
     const newTasks = [...tasks];
@@ -59,7 +59,7 @@ const TaskList = () => {
     setTasks(newTasks);
   }
 
-  const ediTask = (index, text) => {
+  const editTask = (index, text) => {
     const newTasks = [...tasks];
     newTasks[index] = text;
     setTasks(newTasks);
@@ -71,7 +71,8 @@ const TaskList = () => {
 
   return (
     <div className={'field'}>
-      {tasks.map((t, i) => <Task key={i + 1}>{t}</Task>)}
+      <button onClick={addTask} className={'btn new'}>Add task</button>
+      {tasks.map((t, i) => <Task key={i + 1} index={i} remove={deleteTask} edit={editTask}>{t}</Task>)}
     </div>
   )
 }
